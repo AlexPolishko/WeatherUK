@@ -4,30 +4,33 @@ namespace WeatherUK.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class WeatherForecastController : ControllerBase
+    public class RainfallController : ControllerBase
     {
         private static readonly string[] Summaries = new[]
         {
         "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
     };
 
-        private readonly ILogger<WeatherForecastController> _logger;
+        private readonly ILogger<RainfallController> _logger;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public RainfallController(ILogger<RainfallController> logger)
         {
             _logger = logger;
         }
 
-        [HttpGet(Name = "GetWeatherForecast")]
-        public IEnumerable<WeatherForecast> Get()
+        [HttpGet]
+        [Route("id/{stationId}/readings")]
+        public IActionResult Get(string stationId, [FromQuery] int count = 10)
         {
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+            if (count < 1 || count > 100) return BadRequest();
+
+            return Ok(Enumerable.Range(1, count).Select(index => new WeatherForecast
             {
                 Date = DateTime.Now.AddDays(index),
                 TemperatureC = Random.Shared.Next(-20, 55),
                 Summary = Summaries[Random.Shared.Next(Summaries.Length)]
             })
-            .ToArray();
+            .ToArray());
         }
     }
 }
