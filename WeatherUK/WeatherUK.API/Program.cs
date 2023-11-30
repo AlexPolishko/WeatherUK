@@ -1,4 +1,3 @@
-using Microsoft.OpenApi.Models;
 using System.Reflection;
 using WeatherUK.Infrastructure;
 
@@ -42,14 +41,9 @@ namespace WeatherUK.API
                 app.UseSwaggerUI();
             }
 
-            app.UseHttpsRedirection();
-
-            app.UseAuthorization();
-
-
             app.MapControllers();
 
-            app.Run();
+            app.Run("http://localhost:3000");
         }
     }
 }

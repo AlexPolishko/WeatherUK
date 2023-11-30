@@ -1,9 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Net.Http;
-using System.Net.Http.Json;
-using System.Text.Json;
 
 namespace WeatherUK.Infrastructure
 {
@@ -38,15 +34,17 @@ namespace WeatherUK.Infrastructure
                         var result = array.Select(
                                         x => new RainfallReading
                                         {
-                                            DateTime = DateTime.Parse(x["dateTime"].ToString()),
-                                            Value = decimal.Parse(x["value"].ToString())
+                                            DateTime = DateTime.Parse(x["dateTime"]?.ToString()),
+                                            Value = decimal.Parse(x["value"]?.ToString())
                                         }).ToArray();
 
                         return result;
                     }
                 }
-
-                return Array.Empty<RainfallReading>();
+                else 
+                {
+                    _logger.LogError("Client error response code: {Error}", response.StatusCode);
+                }
             }
             catch (Exception ex)
             {

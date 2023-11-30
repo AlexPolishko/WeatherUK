@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using WeatherUK.API.Models;
 using WeatherUK.Infrastructure;
+using RainfallReading = WeatherUK.Infrastructure.RainfallReading;
 
 namespace WeatherUK.API.Controllers
 {
@@ -46,7 +47,21 @@ namespace WeatherUK.API.Controllers
                 });
             }
 
-            var result = await _rainfallClient.GetReadingsAsync(stationId, count);
+            RainfallReading[] result = Array.Empty<RainfallReading>();
+            try
+            {
+                result = await _rainfallClient.GetReadingsAsync(stationId, count);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error: {Error}", ex);
+                return StatusCode(500, "An internal server error occurred");
+            }
+
+            if (result.Length == 0)
+            {
+                return NotFound(new ErrorResponse { Message = $"No readings found for the specified stationId:{stationId}" });
+            }
 
             return Ok( new RainfallReadingResponse
             {
