@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
+using WeatherUK.API.Models;
 
 namespace WeatherUK.API.Controllers
 {
@@ -26,7 +27,7 @@ namespace WeatherUK.API.Controllers
         /// <param name="count">The number of readings to return</param>
         [HttpGet]
         [Route("id/{stationId}/readings")]
-        [SwaggerResponse(200, "A list of rainfall readings successfully retrieved", typeof(WeatherForecast[]))]
+        [SwaggerResponse(200, "A list of rainfall readings successfully retrieved", typeof(RainfallReadingResponse[]))]
         [SwaggerResponse(400, "Invalid request")]
         [SwaggerResponse(404, "No readings found for the specified stationId")]
         [SwaggerResponse(500, "Internal server error")]
@@ -34,13 +35,16 @@ namespace WeatherUK.API.Controllers
         {
             if (count < 1 || count > 100) return BadRequest();
 
-            return Ok(Enumerable.Range(1, count).Select(index => new WeatherForecast
+            return Ok( new RainfallReadingResponse
             {
-                Date = DateTime.Now.AddDays(index),
-                TemperatureC = Random.Shared.Next(-20, 55),
-                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-            })
-            .ToArray());
+                Readings =
+                Enumerable.Range(1, count).Select(index => new RainfallReading
+                {
+                    DateMeasured = DateTime.Now.AddDays(index).ToShortDateString(),
+                    AmountMeasured = Random.Shared.Next(-20, 55),
+                })
+            .ToArray()
+            });
         }
     }
 }
