@@ -11,7 +11,15 @@ namespace WeatherUK.API
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+                {
+                    Title = "Rainfall Api",
+                    Version = "1.0",
+                    Description = "An API which provides rainfall reading data"
+                });
+            });
 
             var app = builder.Build();
 
