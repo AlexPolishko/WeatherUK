@@ -1,3 +1,6 @@
+using Microsoft.OpenApi.Models;
+using System.Reflection;
+
 namespace WeatherUK.API
 {
     public class Program
@@ -19,6 +22,13 @@ namespace WeatherUK.API
                     Version = "1.0",
                     Description = "An API which provides rainfall reading data"
                 });
+
+                options.TagActionsBy(api => new[] { "Rainfall" });
+
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                options.IncludeXmlComments(xmlPath);
+
             });
 
             var app = builder.Build();
