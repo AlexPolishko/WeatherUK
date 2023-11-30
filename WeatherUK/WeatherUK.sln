@@ -5,6 +5,8 @@ VisualStudioVersion = 17.3.32804.467
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherUK.API", "WeatherUK.API\WeatherUK.API.csproj", "{B6040012-6E1A-4108-B39B-4D8715F22CCF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherUK.Infrastructure", "WeatherUK.Infrastructure\WeatherUK.Infrastructure.csproj", "{57F57847-F255-46E0-9A3F-824ABBB5ABE4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{B6040012-6E1A-4108-B39B-4D8715F22CCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B6040012-6E1A-4108-B39B-4D8715F22CCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B6040012-6E1A-4108-B39B-4D8715F22CCF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{57F57847-F255-46E0-9A3F-824ABBB5ABE4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{57F57847-F255-46E0-9A3F-824ABBB5ABE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{57F57847-F255-46E0-9A3F-824ABBB5ABE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{57F57847-F255-46E0-9A3F-824ABBB5ABE4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

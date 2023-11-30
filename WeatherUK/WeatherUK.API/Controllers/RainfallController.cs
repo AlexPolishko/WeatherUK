@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using WeatherUK.API.Models;
+using WeatherUK.Infrastructure;
 
 namespace WeatherUK.API.Controllers
 {
@@ -10,10 +11,12 @@ namespace WeatherUK.API.Controllers
     {
 
         private readonly ILogger<RainfallController> _logger;
+        private IRainfallClient _rainfallClient;
 
-        public RainfallController(ILogger<RainfallController> logger)
+        public RainfallController(ILogger<RainfallController> logger, IRainfallClient rainfallClient)
         {
             _logger = logger;
+            _rainfallClient = rainfallClient;
         }
 
         /// <summary>
@@ -28,7 +31,7 @@ namespace WeatherUK.API.Controllers
         [SwaggerResponse(400, "Invalid request", typeof(ErrorResponse))]
         [SwaggerResponse(404, "No readings found for the specified stationId",typeof(ErrorResponse))]
         [SwaggerResponse(500, "Internal server error")]
-        public IActionResult Get(string stationId, [FromQuery] int count = 10)
+        public async Task<IActionResult> Get(string stationId, [FromQuery] int count = 10)
         {
             if (count < 1 || count > 100)
             {
@@ -43,13 +46,14 @@ namespace WeatherUK.API.Controllers
                 });
             }
 
+            var result = await _rainfallClient.GetReadingsAsync(stationId, count);
+
             return Ok( new RainfallReadingResponse
             {
-                Readings =
-                Enumerable.Range(1, count).Select(index => new RainfallReading
+                Readings = result.Select(readings => new Models.RainfallReading
                 {
-                    DateMeasured = DateTime.Now.AddDays(index).ToShortDateString(),
-                    AmountMeasured = Random.Shared.Next(-20, 55),
+                    DateMeasured = readings.DateTime.ToShortDateString(),
+                    AmountMeasured = readings.Value,
                 })
             .ToArray()
             });
